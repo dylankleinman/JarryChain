@@ -1,8 +1,16 @@
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #333;
+    background-color: rgb(20, 22, 59);
     overflow: hidden;
     position: fixed;
     top: 0;
     width: 100%;
+    color:white !important;
+    padding: 0.5rem 9rem !important;
+    justify-content: space-between !important;
+}
+
+.navbar-brand{
+    color: white !important;
+    font-size: 1rem !important;
 }

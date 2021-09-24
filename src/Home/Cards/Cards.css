@@ -4,4 +4,10 @@
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 30px;
+    padding-top: 0px;
+}
+
+.cardHeader{
+    padding-left: 30px;
+    font-size: 20px;
 }

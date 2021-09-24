@@ -6,7 +6,7 @@ import TopNav from '../src/TopNav/TopNav';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Home from './Home/Home';
 
-const Cards = React.lazy(() => import('./Cards/Cards'));  //using lazy loading only loads components when they are needed.  
+const Cards = React.lazy(() => import('./Home/Cards/Cards'));  //using lazy loading only loads components when they are needed. 
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Switch>
            {/* Here we are loading the Cards component only when the posts path is visited */}
           <Route path="/Posts" render = {() => <Suspense fallback={<div>Loading...</div>}><Cards/></Suspense>}/> 
+          <Route path="/Other"/>
           <Route path="/" component = {Home}/>
         </Switch>
       </BrowserRouter>

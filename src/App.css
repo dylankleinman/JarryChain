@@ -21,7 +21,15 @@
   color: #09d3ac;
 }
 
+@font-face {
+  font-family: AvertaRegular;
+  src: url(AvertaFont.otf);
+}
+
 body{
-  background-attachment: fixed;
-  background-image: linear-gradient(#bfdafc,#cca4fd, #7F51FD) !important;
+  /* background-attachment: fixed;
+  background-image: linear-gradient(#bfdafc,#cca4fd, #7F51FD) !important; */
+  background: rgb(20, 22, 59) !important;
+  font-family: AvertaRegular !important;
+  color:white !important;
 }

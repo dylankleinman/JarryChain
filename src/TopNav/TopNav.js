@@ -1,23 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import NavItem from './NavItem/NavItem';
 import './TopNav.css';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import jerry from '../img/IMG_1575.png';
+import ConnectButton from './walletConnect/connectButton';
 
 const TopNav = () => {
+
     return(
-        // <div className="topnav">
-        //     <NavItem  path="/">Home</NavItem>
-        //     <NavItem  path="/">Users</NavItem>
-        //     <NavItem  path="/Posts">Posts</NavItem>
-        // </div>
-        <Navbar bg="light" expand="lg">
+        <Navbar className="topnav" expand="lg">
             <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
             <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
             <NavItem path="/Posts">Posts</NavItem>
             <NavItem path="/Other">Other</NavItem>
+            <ConnectButton></ConnectButton>
             {/* <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link href="#home">Home</Nav.Link>

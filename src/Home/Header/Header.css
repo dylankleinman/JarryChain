@@ -1,0 +1,12 @@
+@font-face {
+    font-family: AvertaBold;
+    src: url(../../AvertaBold.otf);
+  }
+
+.Header{
+    margin: 5rem;
+    text-align: center;
+    font-family: AvertaBold !important;
+    font-size: 48px;
+    font-weight: 1000;
+}

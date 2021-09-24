@@ -1,0 +1,14 @@
+
+.btn-outline-dark { 
+    color: rgb(245, 171, 65) !important;
+    border-color: rgb(245, 171, 65) !important;
+}
+
+.btn-outline-dark:hover{
+    background: rgb(245, 171, 65) !important;
+    color: white !important;
+}
+
+.btn-outline-dark:focus{
+    border-color: rgb(245, 171, 65) !important;
+}
