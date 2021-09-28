@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import './connectButton.css';
-import Web3 from 'web3';
-
-const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 class ConnectButton extends Component{
     constructor(props) {
@@ -13,16 +10,22 @@ class ConnectButton extends Component{
             isConnected: false,
             connectWalletButtonVal: 'Connect Wallet',
             connectedAccountNumber: '',
+            visibility: false,
         }
     }
 
     //Check to see if wallet is already connected to site
     async componentDidMount(){
-        const account = await window.ethereum.request({ method: 'eth_accounts' });
-        if(account[0]!=null && account[0] != undefined){
-            this.updateAccountInfo(account[0])
-        } else {
-            console.log('no wallet');
+        if (typeof window.ethereum !== 'undefined') {
+            this.setState({
+                visibility: true,
+            })
+            const account = await window.ethereum.request({ method: 'eth_accounts' });
+            if(account[0]!=null && account[0] != undefined){
+                this.updateAccountInfo(account[0])
+            } else {
+                console.log('no wallet');
+            }
         }
     }
 
@@ -96,7 +99,7 @@ class ConnectButton extends Component{
 
     render () {
         return(
-            <Button variant="outline-dark" onClick = {this.clickHandler}>{this.state.isConnecting? 'loading' : this.state.connectWalletButtonVal}</Button>
+            <div style={this.state.visibility ? {} : {display:'none'}}><Button variant="outline-dark" onClick = {this.clickHandler}>{this.state.isConnecting? 'loading' : this.state.connectWalletButtonVal}</Button></div>
         )
     }
 }

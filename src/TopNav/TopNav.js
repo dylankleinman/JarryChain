@@ -29,7 +29,7 @@ class TopNav extends Component{
                 <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
                 <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
                 <NavLink to="/Portfolio"><Navbar.Brand>My Portfolio</Navbar.Brand></NavLink>
-                <NavItem path="/Other">Other</NavItem>
+                <NavItem path="/History">History</NavItem>
                 <ConnectButton parentCallback = {this.callbackFunction}></ConnectButton>
             </Navbar>
         )

@@ -27,27 +27,38 @@ class CoinModal extends Component {
     //Whenever modal is updated with new props, set showmodal to true and fetch new data for modal
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.show !== prevProps.show) {
-            this.setState({showModal:!this.state.showModal, coinID: this.props.coinID, coinName: this.props.coinName})
-            axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + this.props.coinID + '&order=market_cap_desc&per_page=100&page=1&sparkline=false')
-            .then(response => {
-                console.log(response);
-                this.setState({
-                    coinPrice: Math.round(response.data[0].current_price * 100)/100, 
-                    coinMarketCap: response.data[0].market_cap,
-                    coinTicker: response.data[0].symbol.toUpperCase(),
-                    coinImage: response.data[0].image,
-                });
-                axios.get('https://api.coingecko.com/api/v3/coins/'+this.props.coinID+'/market_chart?vs_currency=usd&days=90&interval=daily')
-                .then(data => {
-                    data.data.prices.forEach(element =>{
+            if(this.props.coinID != undefined){
+                this.setState({showModal:!this.state.showModal, coinID: this.props.coinID, coinName: this.props.coinName})
+                try{
+                    axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + this.props.coinID + '&order=market_cap_desc&per_page=100&page=1&sparkline=false')
+                    .then(response => {
                         this.setState({
-                            graphData: [...this.state.graphData, element],
+                            coinPrice: Math.round(response.data[0].current_price * 100)/100, 
+                            coinMarketCap: response.data[0].market_cap,
+                            coinTicker: response.data[0].symbol.toUpperCase(),
+                            coinImage: response.data[0].image,
+                        });
+                        axios.get('https://api.coingecko.com/api/v3/coins/'+this.props.coinID+'/market_chart?vs_currency=usd&days=90&interval=daily')
+                        .then(data => {
+                            data.data.prices.forEach(element =>{
+                                this.setState({
+                                    graphData: [...this.state.graphData, element],
+                                })
+                            })
+                            this.setState({isFetching: false})
                         })
                     })
-                    this.setState({isFetching: false})
+                } catch(error){
+                    console.log(error);
+                }
+            }else {
+                this.setState({
+                    coinID: '',
+                    coinName: this.props.coinName,
+                    showModal: !this.state.showModal,
                 })
-            })
-        }
+            }
+        } 
     }
 
     handleHide = () =>{
@@ -61,7 +72,7 @@ class CoinModal extends Component {
         <Modal.Title>{this.state.isFetching ? '': <img style={{marginRight: "5px", height:"40px", width: "40px"}}src={this.state.coinImage}></img>}{this.state.coinName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.state.isFetching ?  
+                    {this.state.coinID ? (this.state.isFetching ?  
                         <SpinnerDiamond color="rgb(245, 171, 65)" size="100"/> : 
                         <div>
                             <div style={{marginBottom: "1rem"}}>{this.state.coinTicker} Price Last 90 Days</div>
@@ -78,7 +89,7 @@ class CoinModal extends Component {
                                 </div>
                             </div>
                         </div>
-                    }
+                    ): <div>No Chart Or Price Data Available</div>}
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={() => this.handleHide()}>
