@@ -55,7 +55,7 @@ class CoinTable extends Component {
             isConnecting: true,
         })
         try{
-            axios.get('http://api.ethplorer.io/getAddressInfo/'+this.props.address+'?apiKey=EK-ceqe4-UKc2A15-7hUWQ')
+            axios.get('https://api.ethplorer.io/getAddressInfo/'+this.props.address+'?apiKey=EK-ceqe4-UKc2A15-7hUWQ')
             .then(response => {
                 console.log(response);
                 if(response.data.tokens != null){
