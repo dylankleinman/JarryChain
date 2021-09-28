@@ -1,0 +1,29 @@
+.coinRow, .coinHeader{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 25px;
+}
+
+.coinRow:hover{
+        cursor: pointer;
+        background-color: rgb(58, 62, 125) !important;
+}
+
+.coinRow div, .coinHeader div{
+        min-width: 5rem;
+        width: 10rem;
+        word-wrap: break-word;
+        padding: 1rem;
+}
+
+.coinRow img{
+        width:auto;
+        height:40px;
+}
+
+.coinHeader img{
+        width: auto;
+        height: 50px;
+}

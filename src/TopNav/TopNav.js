@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Component} from 'react';
 import NavItem from './NavItem/NavItem';
 import './TopNav.css';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,34 +7,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import jerry from '../img/IMG_1575.png';
 import ConnectButton from './walletConnect/connectButton';
 
-const TopNav = () => {
+class TopNav extends Component{
 
-    return(
-        <Navbar className="topnav" expand="lg">
-            <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
-            <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
-            <NavItem path="/Posts">Posts</NavItem>
-            <NavItem path="/Other">Other</NavItem>
-            <ConnectButton></ConnectButton>
-            {/* <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#link">Link</Nav.Link>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-                {/* <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success">Search</Button>
-                </Form>
-            </Navbar.Collapse> */}
-        </Navbar>
-    )
+    constructor(props){
+        super(props)
+        this.state={
+            userAddress: '',
+        }
+    }
+
+    callbackFunction = (childData) => {
+        this.setState({userAddress: childData}, () => {
+            this.props.parentCallback(this.state.userAddress)
+        })
+    }
+
+
+    render(){
+        return(
+            <Navbar className="topnav" expand="lg">
+                <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
+                <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
+                <NavLink to="/Portfolio"><Navbar.Brand>My Portfolio</Navbar.Brand></NavLink>
+                <NavItem path="/Other">Other</NavItem>
+                <ConnectButton parentCallback = {this.callbackFunction}></ConnectButton>
+            </Navbar>
+        )
+    }
 }
 
 export default TopNav;
