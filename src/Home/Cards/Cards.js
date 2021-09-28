@@ -36,7 +36,7 @@ class Cards extends Component {
     render() {
         return(
             <div><CoinModal show={this.state.showModal} coinID={this.state.coinID} coinName={this.state.coinName}></CoinModal>
-            <div class="cardHeader">Top 7 Trending Coins</div>
+            <div class="cardHeader">Top 7 Trending Tokens</div>
             {this.state.coinLoading? 
                 <div className="spinner"><SpinnerDiamond color="rgb(245, 171, 65)" size="100"/></div> : 
                 <div className="Cards">

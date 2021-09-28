@@ -84,7 +84,7 @@ class CoinTable extends Component {
             <div className="coinTable">
                 <CoinRow class="coinHeader" name="Coin Name" image={coinGif} price="Price (USD)" balance="Portfolio Balance" balanceUSD = "Portfolio Balance (USD)" oneDay="One Day Change" sevenDay="Seven Day Change"></CoinRow>
                 <hr style={{backgroundColor:"white"}}></hr>
-                <div>{this.state.isConnected ? '' : (this.state.isConnecting ? '' : 'Please Connect Wallet to View Coins')}</div>
+                <div>{this.state.isConnected ? '' : (this.state.isConnecting ? '' : 'Please Connect Wallet to View Tokens')}</div>
                 {this.state.isConnecting ? <SpinnerDiamond color="rgb(245, 171, 65)" size="100"></SpinnerDiamond> : 
                     (this.state.isConnected ?
                         [
