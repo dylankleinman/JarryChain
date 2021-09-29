@@ -1,46 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {Component, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
+import './Chart.css';
+import Chart from 'kaktana-react-lightweight-charts';
 
-
-const Chart = (props) => {
-    const chartRef = useRef();
-
-    const dateValueArray = props.data.map(function(x){
-        return {
-            time: new Date(x[0]).toISOString().split('T')[0],
-            value: x[1]
-        }
-    })
-      
-
-    dateValueArray.splice(dateValueArray.length - 2, 1);
-    useEffect(() => {
-      const chart = createChart(chartRef.current, { 
-          width: 716, 
-          height: 300,
-        rightPriceScale: {
-                borderVisible: false,
-            },
-        timeScale: {
-                borderVisible: false,
-        }   ,
-        });
-      
-        const lineSeries = chart.addLineSeries();
-        lineSeries.setData(dateValueArray);
-        chart.timeScale().fitContent();
-        var areaSeries = chart.addAreaSeries({
-            topColor: 'rgba(33, 150, 243, 0.56)',
-            bottomColor: 'rgba(33, 150, 243, 0.04)',
-            lineColor: 'rgba(33, 150, 243, 1)',
-            lineWidth: 2,
-        });
-      
-        const darkTheme = {
-            chart: {
+class Coinchart extends Component{
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            options: {
+                alignLabels: true,
+                rightPriceScale: {
+                    borderVisible: false,
+                },
+                timeScale: {
+                    borderVisible: false,
+                    barspacing: 10000,
+                },
                 layout: {
                     backgroundColor: '#2B2B43',
-                    lineColor: '#2B2B43',
+                    ineColor: '#2B2B43',
                     textColor: '#D9D9D9',
                 },
                 watermark: {
@@ -57,32 +36,39 @@ const Chart = (props) => {
                         color: '#363C4E',
                     },
                 },
+                priceScale: {
+                }
             },
-            series: {
-                    topColor: 'rgba(32, 226, 47, 0.56)',
-                    bottomColor: 'rgba(32, 226, 47, 0.04)',
-                    lineColor: 'rgba(32, 226, 47, 1)',
-            },
-        };
-
-        var themesData = {
-            Dark: darkTheme,
-        };
-    
-        function syncToTheme(theme) {
-            chart.applyOptions(themesData[theme].chart);
-            areaSeries.applyOptions(themesData[theme].series);
+        lineSeries: [{
+            data: [
+              ]
+          }]
         }
-        syncToTheme('Dark');
-    }, []);
+      }
+
+    componentDidMount(props){
+        let dateValueArray = this.props.data.map(function(x){
+            return {
+                time: new Date(x[0]).toISOString().split('T')[0],
+                value: x[1]
+            }
+        })
+        dateValueArray.splice(dateValueArray.length - 2, 1);
+        this.setState({
+            lineSeries: [{
+                data: dateValueArray
+            }]
+        })
+    }
 
     
-  
-    return (
-      <div className="chart-container">
-        {/* <h2>{props.name}</h2> */}
-        <div ref={chartRef} />
-      </div>
-    );
+    render(){
+        return (
+            <div className="chart-container">
+              {/* <div ref={chartRef} /> */}
+              <Chart options={this.state.options} lineSeries={this.state.lineSeries} autoWidth height={320} />
+            </div>
+        );
+    }
   };
-  export default Chart;
+  export default Coinchart;

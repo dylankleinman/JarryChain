@@ -2,6 +2,7 @@
 .btn-outline-dark { 
     color: rgb(245, 171, 65) !important;
     border-color: rgb(245, 171, 65) !important;
+    white-space: nowrap !important;
 }
 
 .btn-outline-dark:hover{

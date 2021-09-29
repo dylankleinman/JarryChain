@@ -10,10 +10,10 @@ const CoinRow = (props) => {
             <div>{props.image ? <img src={props.image}></img> : ''}</div>
             <div className="coinName" data-tip={props.tooltip}>{props.name}</div>
             <div>{props.price}</div>
-            <div>{props.balance}</div>
-            <div>{props.balanceUSD}</div>
-            <div>{props.oneDay}</div>
-            <div>{props.sevenDay}</div>
+            <div className="">{props.balance}</div>
+            <div className="balanceUSD">{props.balanceUSD}</div>
+            <div className="oneDay">{props.oneDay}</div>
+            <div className="sevenDay">{props.sevenDay}</div>
         </div>
     )
 };

@@ -12,11 +12,21 @@
 }
 
 .coinRow div, .coinHeader div{
-        min-width: 5rem;
-        width: 10rem;
+        flex: 1;
+        /* width: 10rem; */
         word-wrap: break-word;
         padding: 1rem;
 }
+
+@media only screen and (max-width: 1000px) {
+        .balanceUSD, .oneDay, .sevenDay {
+                display: none;
+       }
+       .coinRow div{
+                min-width: 5rem;
+       }
+}
+      
 
 .coinRow img{
         width:auto;

@@ -6,11 +6,23 @@
     top: 0;
     width: 100%;
     color:white !important;
-    padding: 0.5rem 9rem !important;
+    padding: 0.5rem 5rem !important;
     justify-content: space-between !important;
 }
+
+@media only screen and (max-width: 1000px) {
+    .topnav {
+        padding: 0.5rem 1rem !important;
+    }
+  }
 
 .navbar-brand{
     color: white !important;
     font-size: 1rem !important;
+    padding-right: 9rem !important;
+    margin-right: 2rem !important;
+}
+
+.navbar-collapse{
+    justify-content: space-between;
 }

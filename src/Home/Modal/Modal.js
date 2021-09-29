@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './Modal.css';
 import {SpinnerDiamond} from 'spinners-react';
-import Chart from './Chart';
+import Coinchart from './Chart';
 
 
 class CoinModal extends Component {
@@ -38,7 +38,7 @@ class CoinModal extends Component {
                             coinTicker: response.data[0].symbol.toUpperCase(),
                             coinImage: response.data[0].image,
                         });
-                        axios.get('https://api.coingecko.com/api/v3/coins/'+this.props.coinID+'/market_chart?vs_currency=usd&days=90&interval=daily')
+                        axios.get('https://api.coingecko.com/api/v3/coins/'+this.props.coinID+'/market_chart?vs_currency=usd&days=150&interval=daily')
                         .then(data => {
                             data.data.prices.forEach(element =>{
                                 this.setState({
@@ -75,8 +75,8 @@ class CoinModal extends Component {
                     {this.state.coinID ? (this.state.isFetching ?  
                         <SpinnerDiamond color="rgb(245, 171, 65)" size="100"/> : 
                         <div>
-                            <div style={{marginBottom: "1rem"}}>{this.state.coinTicker} Price Last 90 Days</div>
-                            <Chart data={this.state.graphData}></Chart>
+                            <div style={{marginBottom: "1rem"}}>{this.state.coinTicker} Price Last 150 Days</div>
+                            <Coinchart data={this.state.graphData}></Coinchart>
                             <div className="coinDetails">
                                 <div>
                                     Current Price: ${this.state.coinPrice}
