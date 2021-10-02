@@ -14,35 +14,6 @@ class Home extends Component {
         }
     }
 
-    // isInstalled = (web3) =>{
-    //     if (typeof web3 !== 'undefined'){
-    //         console.log('MetaMask is installed')
-    //      } 
-    //      else{
-    //         console.log('MetaMask is not installed')
-    //      }
-    // }
-
-    // isLocked = (web3) =>{
-    //     web3.eth.getAccounts(function (err, accounts) {
-    //         if (err != null) {
-    //             console.log(err)
-    //         }
-    //         else if (accounts.length === 0) {
-    //             console.log('MetaMask is locked')
-    //         }
-    //         else {
-    //             console.log('MetaMask is unlocked')
-    //         }
-    //     });
-    // }
-
-    // componentDidMount(){
-    //     const web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
-    //     this.isInstalled(web3);
-    //     this.isLocked(web3);
-    // }
-
     render(){
         return(
             <div className="container">

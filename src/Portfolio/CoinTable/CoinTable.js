@@ -98,6 +98,7 @@ class CoinTable extends Component {
                 {this.state.isConnecting ? <SpinnerDiamond color="rgb(245, 171, 65)" size="100"></SpinnerDiamond> : 
                     (this.state.isConnected ?
                         [
+                            // <div style={{textAlign: 'left', fontSize: '.9rem'}}>Displaying Tokens For Address: {this.props.address}</div>,
                             <CoinRow class="coinRow" key="ethereememmm" clicked={() => this.showModal('ethereum', 'Ethereum')} name='Eth' tooltip='Ethereum' image='https://ethplorer.io/images/eth.png' balanceUSD = {(Number(this.state.ethInfo.balance)*Number(this.state.ethPrice.rate)).toFixed(2)} price={Number(this.state.ethPrice.rate).toFixed(2)} balance={Number(this.state.ethInfo.balance).toFixed(2)} oneDay={this.state.ethPrice.diff} sevenDay={this.state.ethPrice.diff7d}></CoinRow>,
                             this.state.coinList.map(element => 
                                 <CoinRow class="coinRow" clicked={() => this.showModal(element.tokenInfo.coingecko, element.tokenInfo.name)} key={element.tokenInfo.address} tooltip={element.tokenInfo.name} name={element.tokenInfo.symbol} image={element.tokenInfo.image ? 'https://ethplorer.io' + element.tokenInfo.image : ''} balanceUSD = {(Number(element.tokenInfo.price.rate)*this.formatBalance(element)).toFixed(2)} price={Number(element.tokenInfo.price.rate).toFixed(2)} balance={this.formatBalance(element)} oneDay={element.tokenInfo.price.diff} sevenDay={element.tokenInfo.price.diff7d}></CoinRow>

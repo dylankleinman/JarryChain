@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from '../Home/Header/Header'
+import HistoryList from './HistoryList/historyList'
 
-const History = () =>{
+const History = (props) =>{
     return(
-        <div>history</div>
+        <div>
+            <Header></Header>
+            <HistoryList address={props.address}></HistoryList>
+        </div>
     )
 } 
 

@@ -20,7 +20,7 @@ function App() {
            {/* Here we are loading the Cards component only when the posts path is visited */}
           {/* <Route path="/Posts" render = {() => <Suspense fallback={<div>Loading...</div>}><Cards/></Suspense>}/>  */}
           <Route path="/Portfolio"><Portfolio address={userAddress}></Portfolio></Route>
-          <Route path="/History"><History></History></Route>
+          <Route path="/History"><History address={userAddress}></History></Route>
           <Route path="/"><Home></Home></Route>
         </Switch>
       </BrowserRouter>
