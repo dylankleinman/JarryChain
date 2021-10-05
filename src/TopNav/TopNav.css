@@ -2,7 +2,7 @@
 .topnav {
     background-color: rgb(20, 22, 59);
     overflow: hidden;
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
     color:white !important;

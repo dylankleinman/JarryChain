@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import CoinTable from './CoinTable/CoinTable'
 import Header from '../Home/Header/Header'
 

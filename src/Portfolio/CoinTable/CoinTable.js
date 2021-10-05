@@ -7,6 +7,7 @@ import {SpinnerDiamond} from 'spinners-react';
 import coinGif from '../../img/bitcoin.gif';
 import CoinModal from '../../Home/Modal/Modal';
 
+const apiKey = process.env.REACT_APP_API_KEY;
 
 class CoinTable extends Component {
 
@@ -32,19 +33,19 @@ class CoinTable extends Component {
     }
 
     async componentDidMount(){
-        if(this.props.address != '' && this.state.isConnected != true){
+        if(this.props.address !== '' && this.state.isConnected !== true){
             this.getData();
         }
     }
 
     async componentDidUpdate(prevProps, prevState){
-        if(this.props.address != '' && this.state.isConnected != true && this.state.isConnecting == false){
+        if(this.props.address !== '' && this.state.isConnected !== true && this.state.isConnecting === false){
             this.getData();
         }
-        if(prevProps.address != this.props.address){
+        if(prevProps.address !== this.props.address){
             this.getData();
         }
-        if(this.props.address == '' && prevProps.address != this.props.address){
+        if(this.props.address === '' && prevProps.address !== this.props.address){
             this.setState({
                 isConnected: false,
                 isConnecting: false,
@@ -57,7 +58,7 @@ class CoinTable extends Component {
             isConnecting: true,
         })
         try{
-            axios.get('https://api.ethplorer.io/getAddressInfo/'+this.props.address+'?apiKey=EK-ceqe4-UKc2A15-7hUWQ')
+            axios.get('https://api.ethplorer.io/getAddressInfo/'+this.props.address+'?apiKey=' + apiKey)
             .then(response => {
                 if(response.data.tokens != null){
                     this.setState({

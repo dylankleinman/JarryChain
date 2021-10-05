@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Web3 from 'web3';
+//import Web3 from 'web3';
 // import { isUserEthereumAddressInBloom } from 'web3-utils';
 // import bootstrapCard from '../Cards/Card/Card';
 import Cards from './Cards/Cards';

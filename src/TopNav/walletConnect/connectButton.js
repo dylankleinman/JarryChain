@@ -21,7 +21,7 @@ class ConnectButton extends Component{
                 visibility: true,
             })
             const account = await window.ethereum.request({ method: 'eth_accounts' });
-            if(account[0]!=null && account[0] != undefined){
+            if(account[0]!== null && account[0] !== undefined){
                 this.updateAccountInfo(account[0])
             } else {
                 console.log('no wallet');
@@ -31,7 +31,7 @@ class ConnectButton extends Component{
 
     async componentDidUpdate(prevProps, prevState){
         window.ethereum.on('accountsChanged', (accounts) => {
-            if(accounts [0] == undefined){
+            if(accounts[0] === undefined){
                 this.setState({
                     isConnected: false,
                     connectWalletButtonVal: 'Connect Wallet',
@@ -39,9 +39,9 @@ class ConnectButton extends Component{
                 })
                 this.sendData('')
             }
-            if(this.state.connectedAccountNumber != accounts[0] && accounts[0] != undefined){
+            if(this.state.connectedAccountNumber !== accounts[0] && accounts[0] !== undefined){
                 this.updateAccountInfo(accounts[0])
-                console.log('switched accounts')
+                // console.log('switched accounts')
             }
         })
     }
@@ -82,7 +82,7 @@ class ConnectButton extends Component{
           }
         if(!this.state.isConnected){
             const accounts = await this.getAccount();
-            if(accounts != undefined){
+            if(accounts !== undefined){
                 const account = accounts[0];
                 this.setState({
                     connectedAccountNumber: accounts[0],

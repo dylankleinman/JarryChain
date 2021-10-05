@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './historyList.css';
 import axios from 'axios';
-// import PaginationBasic from './paginationComponent/paginationComponent';
 import ReactPaginate from 'react-paginate';
 import HistoryItem from './HistoryItem/historyItem'
 import Decimal from 'decimal.js';
@@ -31,7 +30,6 @@ class HistoryList extends Component {
     }
 
     checkNewAddress = (newAddress) => {
-        console.log(newAddress)
        if(this.state.address !== newAddress && newAddress !==''){
             this.setState({
                 address: newAddress,
@@ -60,7 +58,6 @@ class HistoryList extends Component {
         this.setState({isFetching: true});
         axios.get('https://api.ethplorer.io/getAddressHistory/'+ address +'?apiKey=EK-ceqe4-UKc2A15-7hUWQ&limit=100')
             .then(response => {
-                console.log(response);
                 this.setState({
                     pageCount: Math.round(response.data.operations.length/10),
                     pageDisplayed: 0,
@@ -85,7 +82,6 @@ class HistoryList extends Component {
                         this.state.isFetching ? 'Loading':
                             [
                                 this.state.addressHistory[this.state.pageDisplayed].map(element => 
-                                    // <div>{element.timestamp}</div>
                                     <HistoryItem date={new Date((element.timestamp)*1000).toLocaleDateString("en-US")} to={element.to} from={element.from} type={element.type} tokenAddress={element.tokenInfo.address} tokenSymbol={element.tokenInfo.symbol} tokenName={element.tokenInfo.name} txHash={element.transactionHash} value={this.formatBalance(element.value, element.tokenInfo.decimals)}></HistoryItem>
                                 ),
                                 <ReactPaginate

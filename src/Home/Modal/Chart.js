@@ -1,5 +1,4 @@
-import React, {Component, useRef } from 'react';
-import { createChart } from 'lightweight-charts';
+import React, {Component,} from 'react';
 import './Chart.css';
 import Chart from 'kaktana-react-lightweight-charts';
 

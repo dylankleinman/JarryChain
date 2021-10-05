@@ -27,7 +27,7 @@ class CoinModal extends Component {
     //Whenever modal is updated with new props, set showmodal to true and fetch new data for modal
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.show !== prevProps.show) {
-            if(this.props.coinID != undefined){
+            if(this.props.coinID !== undefined){
                 this.setState({showModal:!this.state.showModal, coinID: this.props.coinID, coinName: this.props.coinName})
                 try{
                     axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + this.props.coinID + '&order=market_cap_desc&per_page=100&page=1&sparkline=false')
@@ -69,7 +69,7 @@ class CoinModal extends Component {
         return(
             <Modal show={this.state.showModal} onHide={() => this.handleHide()} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header style={{textAlign: 'center'}}>
-        <Modal.Title>{this.state.isFetching ? '': <img style={{marginRight: "5px", height:"40px", width: "40px"}}src={this.state.coinImage}></img>}{this.state.coinName}</Modal.Title>
+        <Modal.Title>{this.state.isFetching ? '': <img style={{marginRight: "5px", height:"40px", width: "40px"}}src={this.state.coinImage} alt="img"></img>}{this.state.coinName}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {this.state.coinID ? (this.state.isFetching ?  

@@ -1,4 +1,4 @@
-import React, {useEffect, Component} from 'react';
+import React, {Component} from 'react';
 import NavItem from './NavItem/NavItem';
 import './TopNav.css';
 import {Navbar, Nav} from 'react-bootstrap';
@@ -25,24 +25,26 @@ class TopNav extends Component{
 
     render(){
         return(
-            <Navbar collapseOnSelect variant="dark" className="topnav" expand="lg">
-                <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                        <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
-                    </Nav>
-                    <Nav>
-                        <NavLink to="/Portfolio"><Navbar.Brand>My Portfolio</Navbar.Brand></NavLink>
-                    </Nav>
-                    <Nav>
-                        <NavItem path="/History">History</NavItem>
-                    </Nav>
-                    <Nav>
-                        <ConnectButton parentCallback = {this.callbackFunction}></ConnectButton>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <div>
+                <Navbar collapseOnSelect variant="dark" className="topnav" expand="lg">
+                    <Navbar.Brand to="/"><img style={{ width: '65px' }} alt="jerryphoto" src={jerry}></img></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="me-auto">
+                            <NavLink to="/"><Navbar.Brand>JerryChain</Navbar.Brand></NavLink>
+                        </Nav>
+                        <Nav>
+                            <NavLink to="/Portfolio"><Navbar.Brand>My Portfolio</Navbar.Brand></NavLink>
+                        </Nav>
+                        <Nav>
+                            <NavItem path="/History">History</NavItem>
+                        </Nav>
+                        <Nav>
+                            <ConnectButton parentCallback = {this.callbackFunction}></ConnectButton>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            </div>
         )
     }
 }
