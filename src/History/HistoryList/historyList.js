@@ -4,7 +4,11 @@ import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import HistoryItem from './HistoryItem/historyItem'
 import Decimal from 'decimal.js';
+import {SpinnerDiamond} from 'spinners-react';
+import SearchBar from '../../External/SearchBar/SearchBar'
+import InvalidAddressToast from '../../External/InvalidAddressToast/InvalidAddressToast'
 
+const apiKey = process.env.REACT_APP_API_KEY;
 
 class HistoryList extends Component {
 
@@ -13,30 +17,41 @@ class HistoryList extends Component {
         this.state = {
             address: '',
             isConnected: false,
-            isFetching: false,
+            isConnecting: false,
             addressHistory: [],
             pageCount:'',
             pageDisplayed: 0,
+            noTransactionHistory: false,
+            showToast: false,
         }
         this.myRef = React.createRef()  
     }
 
-    componentDidUpdate(props){
-        this.checkNewAddress(this.props.address)
+    async componentDidMount(){
+        if(this.props.address !== '' && this.state.isConnected !== true){
+            this.fetchHistory(this.props.address);
+        }
     }
 
-    componentDidMount(props){
-        this.checkNewAddress(this.props.address)
+    async componentDidUpdate(prevProps, prevState){
+        if(this.props.address !== '' && this.state.isConnected !== true && this.state.isConnecting === false){
+            this.fetchHistory(this.props.address);
+        }
+        if(prevProps.address !== this.props.address && this.props.address !== ''){
+            this.fetchHistory(this.props.address);
+        }
+        if(this.props.address === '' && prevProps.address !== this.props.address){
+            this.setState({
+                isConnected: false,
+                isConnecting: false,
+            })
+        }
     }
 
     checkNewAddress = (newAddress) => {
        if(this.state.address !== newAddress && newAddress !==''){
-            this.setState({
-                address: newAddress,
-                isConnected: true,
-            })
             this.fetchHistory(newAddress);
-        } 
+        }
     }
 
     formatBalance = (value, decimals) => {
@@ -55,21 +70,69 @@ class HistoryList extends Component {
     }
 
     fetchHistory = (address) => {
-        this.setState({isFetching: true});
-        axios.get('https://api.ethplorer.io/getAddressHistory/'+ address +'?apiKey=EK-ceqe4-UKc2A15-7hUWQ&limit=100')
+        this.setState({
+            isConnecting: true,
+            noTransactionHistory: false,
+            addressHistory: [],
+        });
+        axios.get('https://api.ethplorer.io/getAddressHistory/'+ address +'?apiKey='+apiKey+'&limit=100')
             .then(response => {
                 this.setState({
                     pageCount: Math.round(response.data.operations.length/10),
                     pageDisplayed: 0,
-                    addressHistory: [],
                 })
-                while (response.data.operations.length > 0){
+                if(response.data.operations.length !== 0){
+                    while (response.data.operations.length > 0){
+                        this.setState({
+                            addressHistory: [...this.state.addressHistory, response.data.operations.splice(0,10)]
+                        })
+                    }
+                } else {
                     this.setState({
-                        addressHistory: [...this.state.addressHistory, response.data.operations.splice(0,10)]
+                        noTransactionHistory: true,
                     })
                 }
-                this.setState({isFetching:false})
-            })
+                this.setState({
+                    isConnecting:false, 
+                    isConnected: true,
+                })
+            }).catch((error) => {
+                // Error 😨
+                if (error.response) {
+                    /*
+                     * The request was made and the server responded with a
+                     * status code that falls out of the range of 2xx
+                     */
+                    console.log(error.response.data);
+                    // console.log(error.response.status);
+                    // console.log(error.response.headers);
+                    if(error.response.data.error.message === 'Invalid address format'){
+                        this.setState({
+                            isConnecting: false,
+                            showToast: true,
+                            messageArrayVal: Math.floor(Math.random() * 5)
+                        })
+                        setTimeout(() => {
+                            this.setState({showToast: false});
+                          }, 2000)
+                    }
+                } else if (error.request) {
+                    /*
+                     * The request was made but no response was received, `error.request`
+                     * is an instance of XMLHttpRequest in the browser and an instance
+                     * of http.ClientRequest in Node.js
+                     */
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request and triggered an Error
+                    console.log('Error', error.message);
+                }
+            });
+    }
+
+    //this function is called when the search bar component has an input that is submitted
+    inputCallBackFunction = (childData) => {
+        this.fetchHistory(childData);
     }
 
     render(){
@@ -78,27 +141,32 @@ class HistoryList extends Component {
                 <div>Address History</div>
                 <hr style={{backgroundColor:"white"}}></hr>
                 <div>
-                    {this.state.isConnected ? 
-                        this.state.isFetching ? 'Loading':
-                            [
-                                this.state.addressHistory[this.state.pageDisplayed].map(element => 
-                                    <HistoryItem date={new Date((element.timestamp)*1000).toLocaleDateString("en-US")} to={element.to} from={element.from} type={element.type} tokenAddress={element.tokenInfo.address} tokenSymbol={element.tokenInfo.symbol} tokenName={element.tokenInfo.name} txHash={element.transactionHash} value={this.formatBalance(element.value, element.tokenInfo.decimals)}></HistoryItem>
-                                ),
-                                <ReactPaginate
-                                    previousLabel={'<'}
-                                    nextLabel={'>'}
-                                    breakLabel={'...'}
-                                    breakClassName={'break-me'}
-                                    pageCount={this.state.pageCount}
-                                    marginPagesDisplayed={1}
-                                    pageRangeDisplayed={4}
-                                    onPageChange={this.handlePageClick}
-                                    containerClassName={'pagination'}
-                                    activeClassName={'activePage'}
-                                />
-                            ]
-                        : 'Please Connect Wallet For Address History'
+                    {this.state.isConnected ? '' : (this.state.isConnecting ? '' : <SearchBar parentCallback = {this.inputCallBackFunction}></SearchBar>)}
+                </div>
+                <div>
+                    {this.state.isConnecting ? <SpinnerDiamond color="rgb(245, 171, 65)" size="100"></SpinnerDiamond> : 
+                        this.state.isConnected ? 
+                                this.state.noTransactionHistory ? 'No Transaction History Available' : 
+                                [
+                                    this.state.addressHistory[this.state.pageDisplayed].map(element => 
+                                        <HistoryItem date={new Date((element.timestamp)*1000).toLocaleDateString("en-US")} to={element.to} from={element.from} type={element.type} tokenAddress={element.tokenInfo.address} tokenSymbol={element.tokenInfo.symbol} tokenName={element.tokenInfo.name} txHash={element.transactionHash} value={this.formatBalance(element.value, element.tokenInfo.decimals)}></HistoryItem>
+                                    ),
+                                    <ReactPaginate
+                                        previousLabel={'<'}
+                                        nextLabel={'>'}
+                                        breakLabel={'...'}
+                                        breakClassName={'break-me'}
+                                        pageCount={this.state.pageCount}
+                                        marginPagesDisplayed={1}
+                                        pageRangeDisplayed={4}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={'pagination'}
+                                        activeClassName={'activePage'}
+                                    />
+                                ]
+                        : ''
                     }
+                    <InvalidAddressToast show={this.state.showToast} messageArrayVal={this.state.messageArrayVal}></InvalidAddressToast>
                 </div>
             </div>
         )

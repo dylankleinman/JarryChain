@@ -6,6 +6,8 @@ import Decimal from 'decimal.js';
 import {SpinnerDiamond} from 'spinners-react';
 import coinGif from '../../img/bitcoin.gif';
 import CoinModal from '../../Home/Modal/Modal';
+import SearchBar from '../../External/SearchBar/SearchBar';
+import InvalidAddressToast from '../../External/InvalidAddressToast/InvalidAddressToast';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -18,6 +20,8 @@ class CoinTable extends Component {
             isConnecting: false,
             coinID: '',
             showModal: false,
+            showToast: false,
+            messageArrayVal : 0,
             coinList: [],
             ethInfo: {},
             ethPrice: {},
@@ -34,16 +38,16 @@ class CoinTable extends Component {
 
     async componentDidMount(){
         if(this.props.address !== '' && this.state.isConnected !== true){
-            this.getData();
+            this.getData(this.props.address);
         }
     }
 
     async componentDidUpdate(prevProps, prevState){
         if(this.props.address !== '' && this.state.isConnected !== true && this.state.isConnecting === false){
-            this.getData();
+            this.getData(this.props.address);
         }
-        if(prevProps.address !== this.props.address){
-            this.getData();
+        if(prevProps.address !== this.props.address && this.props.address !== ''){
+            this.getData(this.props.address);
         }
         if(this.props.address === '' && prevProps.address !== this.props.address){
             this.setState({
@@ -53,12 +57,12 @@ class CoinTable extends Component {
         }
     }
 
-    getData = () => {
+    getData = (address) => {
         this.setState({
             isConnecting: true,
         })
         try{
-            axios.get('https://api.ethplorer.io/getAddressInfo/'+this.props.address+'?apiKey=' + apiKey)
+            axios.get('https://api.ethplorer.io/getAddressInfo/'+address+'?apiKey=' + apiKey)
             .then(response => {
                 if(response.data.tokens != null){
                     this.setState({
@@ -75,7 +79,39 @@ class CoinTable extends Component {
                     isConnected: true,
                     isConnecting: false,
                 });
-            })
+            }).catch((error) => {
+                // Error 😨
+                if (error.response) {
+                    /*
+                     * The request was made and the server responded with a
+                     * status code that falls out of the range of 2xx
+                     */
+                    console.log(error.response.data);
+                    // console.log(error.response.status);
+                    // console.log(error.response.headers);
+                    if(error.response.data.error.message === 'Invalid address format'){
+                        this.setState({
+                            isConnecting: false,
+                            showToast: true,
+                            messageArrayVal: Math.floor(Math.random() * 5)
+                        })
+                        setTimeout(() => {
+                            this.setState({showToast: false});
+                          }, 2000)
+                    }
+                } else if (error.request) {
+                    /*
+                     * The request was made but no response was received, `error.request`
+                     * is an instance of XMLHttpRequest in the browser and an instance
+                     * of http.ClientRequest in Node.js
+                     */
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request and triggered an Error
+                    console.log('Error', error.message);
+                }
+
+            });
         }catch(err){
             console.log(err);
         }
@@ -89,13 +125,20 @@ class CoinTable extends Component {
         });
     }
 
+    //this function is called when the search bar component has an input that is submitted
+    inputCallBackFunction = (childData) => {
+        this.getData(childData);
+    }
+
     render(){
         return(
             <div className="coinTable">
                 <CoinModal show={this.state.showModal} coinID={this.state.coinID} coinName={this.state.coinName}></CoinModal>
                 <CoinRow class="coinHeader" name="Coin Name" image={coinGif} price="Price (USD)" balance="Portfolio Balance" balanceUSD = "Portfolio Balance (USD)" oneDay="One Day Change" sevenDay="Seven Day Change"></CoinRow>
                 <hr style={{backgroundColor:"white"}}></hr>
-                <div>{this.state.isConnected ? '' : (this.state.isConnecting ? '' : 'Please Connect Wallet to View Tokens In Your Wallet')}</div>
+                <div>
+                    {this.state.isConnected ? '' : (this.state.isConnecting ? '' : <SearchBar parentCallback = {this.inputCallBackFunction}></SearchBar>)}
+                </div>
                 {this.state.isConnecting ? <SpinnerDiamond color="rgb(245, 171, 65)" size="100"></SpinnerDiamond> : 
                     (this.state.isConnected ?
                         [
@@ -107,6 +150,7 @@ class CoinTable extends Component {
                         ]
                     : '')
                 }
+                <InvalidAddressToast show={this.state.showToast} messageArrayVal={this.state.messageArrayVal}></InvalidAddressToast>
             </div>
         )
     }
